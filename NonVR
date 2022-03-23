@@ -103,9 +103,9 @@ if vr.VREnabled == false then
 			if ... == Enum.UserCFrame.Head then
 				return look.CFrame
 			elseif ... == Enum.UserCFrame.LeftHand then
-				return larm.CFrame/workspace.CurrentCamera.CFrame
+				return ll0.WorldCFrame/workspace.CurrentCamera.CFrame
 			elseif ... == Enum.UserCFrame.RightHand then
-				return rarm.CFrame/workspace.CurrentCamera.CFrame
+				return rr0.WorldCFrame/workspace.CurrentCamera.CFrame
 			end
 		end
 		return old(self, ...)
