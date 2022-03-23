@@ -1,0 +1,114 @@
+local vr = game:GetService('VRService')
+if vr.VREnabled == false then
+	local uis = game:GetService('UserInputService')
+	local mouse = game:GetService('Players').LocalPlayer:GetMouse()
+	local cam = game:GetObjects('rbxassetid://9178436259')[1]
+	local look = Instance.new('Part')
+	local larm = Instance.new('Part')
+	local rarm = Instance.new('Part')
+	local bbl = Instance.new('BallSocketConstraint')
+	local bbr = Instance.new('BallSocketConstraint')
+	local ll1 = Instance.new('Attachment')
+	local ll0 = Instance.new('Attachment')
+	local rr1 = Instance.new('Attachment')
+	local rr0 = Instance.new('Attachment')
+	local rp = Instance.new('AlignPosition')
+	local lp = Instance.new('AlignPosition')
+	cam.Parent = workspace
+	cam.Anchored = true
+	cam.CanCollide = false
+	larm.Parent = workspace.CurrentCamera
+	larm.CanCollide = false
+	larm.Size = Vector3.new(1, 2, 1)
+	larm.Transparency = 1
+	lp.Parent = larm
+	lp.Attachment0 = ll0
+	lp.Attachment1 = cam.LeftArmPoint
+	lp.MaxForce = lp.MaxForce*4
+	lp.Responsiveness = 40
+	lp.Enabled = false
+	ll1.Parent = larm
+	ll1.Position = Vector3.new(0, 1, 0)
+	ll0.Parent = larm
+	ll0.Position = Vector3.new(0, -1, 0)
+	rarm.Parent = workspace.CurrentCamera
+	rarm.CanCollide = false
+	rarm.Size = Vector3.new(1, 2, 1)
+	rarm.Transparency = 1
+	rp.Parent = rarm
+	rp.Attachment0 = rr0
+	rp.Attachment1 = cam.RightArmPoint
+	rp.MaxForce = rp.MaxForce*4
+	rp.Responsiveness = 40
+	rp.Enabled = false
+	rr1.Parent = rarm
+	rr1.Position = Vector3.new(0, 1, 0)
+	rr0.Parent = rarm
+	rr0.Position = Vector3.new(0, -1, 0)
+	bbl.Parent = larm
+	bbl.Attachment0 = ll1
+	bbl.Attachment1 = cam.LeftArm
+	bbr.Parent = rarm
+	bbr.Attachment0 = rr1
+	bbr.Attachment1 = cam.RightArm
+
+	mouse.Button1Down:Connect(function()
+		lp.Enabled = true
+	end)
+
+	mouse.Button1Up:Connect(function()
+		lp.Enabled = false
+	end)
+
+	mouse.Button2Down:Connect(function()
+		rp.Enabled = true
+	end)
+
+	mouse.Button2Up:Connect(function()
+		rp.Enabled = false
+	end)
+
+	spawn(function()
+		while true do
+			game:GetService('RunService').Stepped:Wait()
+			cam.CFrame = workspace.CurrentCamera.CFrame
+			look.Orientation = cam.Orientation
+		end
+	end)
+
+
+	local mt = getrawmetatable(game)
+	local old = mt.__namecall
+	local protect = newcclosure or protect_function
+
+	setreadonly(mt, false)
+	mt.__namecall = protect(function(self, ...)
+		local method = getnamecallmethod()
+		if method == "GetUserCFrame" then
+			if ... == Enum.UserCFrame.Head then
+				return look.CFrame
+			elseif ... == Enum.UserCFrame.LeftHand then
+				return larm.CFrame/workspace.CurrentCamera.CFrame
+			elseif ... == Enum.UserCFrame.RightHand then
+				return rarm.CFrame/workspace.CurrentCamera.CFrame
+			end
+		end
+		return old(self, ...)
+	end)
+	hookfunction(vr.GetUserCFrame,protect(function() wait(9e9) end))
+
+	mt.__namecall = protect(function(self, ...)
+		local method = getnamecallmethod()
+		if method == "GetUserCFrame" then
+			if ... == Enum.UserCFrame.Head then
+				return look.CFrame
+			elseif ... == Enum.UserCFrame.LeftHand then
+				return larm.CFrame/workspace.CurrentCamera.CFrame
+			elseif ... == Enum.UserCFrame.RightHand then
+				return rarm.CFrame/workspace.CurrentCamera.CFrame
+			end
+		end
+		return old(self, ...)
+	end)
+	hookfunction(uis.GetUserCFrame,protect(function() wait(9e9) end))
+end
