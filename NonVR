@@ -95,7 +95,7 @@ if vr.VREnabled == false then
 		end
 		return old(self, ...)
 	end)
-	hookfunction(vr.GetUserCFrame,protect(function() wait(9e9) end))
+	hookfunction(vr.GetUserCFrame,protect(function() wait() end))
 
 	mt.__namecall = protect(function(self, ...)
 		local method = getnamecallmethod()
@@ -110,5 +110,14 @@ if vr.VREnabled == false then
 		end
 		return old(self, ...)
 	end)
-	hookfunction(uis.GetUserCFrame,protect(function() wait(9e9) end))
+	hookfunction(uis.GetUserCFrame,protect(function() wait() end))
+	
+	mt.__namecall = protect(function(self, ...)
+		local method = getnamecallmethod()
+		if method == "GetUserCFrameEnabled" then
+			return true
+		end
+		return old(self, ...)
+	end)
+	hookfunction(vr.GetUserCFrameEnabled,protect(function() wait() end))
 end
