@@ -71,8 +71,8 @@ if vr.VREnabled == false then
 	spawn(function()
 		while true do
 			game:GetService('RunService').Stepped:Wait()
-			cam.CFrame = workspace.CurrentCamera.CFrame
-			look.Orientation = cam.Orientation
+			look.CFrame = workspace.CurrentCamera.CFrame
+			cam.Orientation = look.Orientation
 		end
 	end)
 
@@ -86,11 +86,11 @@ if vr.VREnabled == false then
 		local method = getnamecallmethod()
 		if method == "GetUserCFrame" then
 			if ... == Enum.UserCFrame.Head then
-				return look.CFrame
+				return cam.CFrame
 			elseif ... == Enum.UserCFrame.LeftHand then
-				return larm.CFrame/workspace.CurrentCamera.CFrame
+				return ll0.WorldCFrame
 			elseif ... == Enum.UserCFrame.RightHand then
-				return rarm.CFrame/workspace.CurrentCamera.CFrame
+				return rr0.WorldCFrame
 			end
 		end
 		return old(self, ...)
@@ -101,17 +101,17 @@ if vr.VREnabled == false then
 		local method = getnamecallmethod()
 		if method == "GetUserCFrame" then
 			if ... == Enum.UserCFrame.Head then
-				return look.CFrame
+				return cam.CFrame
 			elseif ... == Enum.UserCFrame.LeftHand then
-				return ll0.WorldCFrame/workspace.CurrentCamera.CFrame
+				return ll0.WorldCFrame
 			elseif ... == Enum.UserCFrame.RightHand then
-				return rr0.WorldCFrame/workspace.CurrentCamera.CFrame
+				return rr0.WorldCFrame
 			end
 		end
 		return old(self, ...)
 	end)
 	hookfunction(uis.GetUserCFrame,protect(function() wait() end))
-	
+
 	mt.__namecall = protect(function(self, ...)
 		local method = getnamecallmethod()
 		if method == "GetUserCFrameEnabled" then
